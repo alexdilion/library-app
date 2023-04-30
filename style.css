@@ -4,3 +4,35 @@
 	font-family: Poppins, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 	box-sizing: border-box;
 }
+
+body {
+	min-height: 100vh;
+	margin: 0;
+	
+	display: flex;
+	flex-direction: column;
+}
+
+header, footer {
+	background-color: #1b1b2d;
+	color: white;
+}
+
+.title {
+	margin: 1.5rem 0;
+}
+
+.title, footer p {
+	text-align: center;
+}
+
+main {
+	flex: 1;
+	padding: 1rem;
+}
+
+.books {
+	max-width: 1200px;
+	margin-left: auto;
+	margin-right: auto;
+}
