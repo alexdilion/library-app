@@ -6,21 +6,52 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Library App</title>
         <link rel="stylesheet" href="style.css" />
-		<script src="script.js" defer></script>
+        <script src="script.js" defer></script>
     </head>
     <body>
         <header>
             <h1 class="title">My Library</h1>
         </header>
         <main>
-            <div class="library"></div>
+            <div class="card">
+				<div class="card-main">
+					<div class="card-header">
+						<h3 class="book-name">A Game of Thrones</h3>
+						<p class="book-author">By George R.R. Martin</p>
+					</div>
+					<hr>
+					<p class="book-length">Book length: 774 pages</p>
+					<p class="book-status">Status: <span class="status-text read">Read</span></p>
+				</div>
+				<hr>
+				<div class="actions">
+					<button type="button" class="card-button button-edit">Edit</button>
+					<button type="button" class="card-button button-delete">Delete</button>
+				</div>
+			</div>
+			<div class="card">
+				<div class="card-main">
+					<div class="card-header">
+						<h3 class="book-name">Harry Potter and the Philosopher's Stone</h3>
+						<p class="book-author">By J.K. Rowling</p>
+					</div>
+					<hr>
+					<p class="book-length">Book length: 223 pages</p>
+					<p class="book-status">Status: <span class="status-text unread">Unread</span></p>
+				</div>
+				<hr>
+				<div class="actions">
+					<button type="button" class="card-button button-edit">Edit</button>
+					<button type="button" class="card-button button-delete">Delete</button>
+				</div>
+			</div>
         </main>
         <footer>
             <p>
                 Alex Dilion &copy;
                 <script>
                     const year = new Date().getFullYear();
-					document.write(year)
+                    document.write(year);
                 </script>
             </p>
         </footer>
