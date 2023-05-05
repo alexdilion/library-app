@@ -89,9 +89,9 @@ main {
 }
 
 .card-button:hover {
-	border: 1px solid #1b1b2d;
+	border: 2px solid #1b1b2d;
 	cursor: pointer;
-	margin: -1px;
+	margin: -2px;
 }
 
 .card-button:active {
@@ -104,4 +104,8 @@ main {
 
 .button-delete {
 	background-color: #ee5253;
+}
+
+#card-template {
+	display: none;
 }
