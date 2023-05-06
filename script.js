@@ -1,12 +1,7 @@
+/* eslint-disable no-param-reassign */
 const CARD_TEMPLATE = document.querySelector("#card-template");
 const CARDS_CONTAINER = document.querySelector(".cards-container");
 
-let testLibrary = [
-    new Book("All Quiet on the Western Front", "Erich Maria Remarque", 200),
-    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", 1276),
-    new Book("A Game of Thrones", "George R.R. Martin", 774, true),
-    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223, true),
-];
 let library = [];
 
 function Book(name, author, length, read = false) {
@@ -17,6 +12,7 @@ function Book(name, author, length, read = false) {
     this.read = read;
 }
 
+// eslint-disable-next-line no-unused-vars
 function addBookToLibrary(book) {
     library.push(book);
 }
@@ -26,7 +22,7 @@ function setCardDetails(card, book) {
     card.querySelector(".book-author").textContent = `By ${book.author}`;
     card.querySelector(".book-length").textContent = `Book length: ${book.length} pages`;
 
-    let statusText = card.querySelector(".status-text");
+    const statusText = card.querySelector(".status-text");
 
     if (book.read) {
         statusText.textContent = "Read";
@@ -41,7 +37,7 @@ function setCardDetails(card, book) {
 
 function displayBooks() {
     library.forEach((book, index) => {
-        let card = CARD_TEMPLATE.cloneNode(true);
+        const card = CARD_TEMPLATE.cloneNode(true);
         card.setAttribute("data-card-index", index);
         card.removeAttribute("id");
         card.removeAttribute("aria-hidden");
@@ -50,6 +46,13 @@ function displayBooks() {
         setCardDetails(card, book);
     });
 }
+
+const testLibrary = [
+    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223, true),
+    new Book("War and Peace", "Leo Tolstoy", 1225, true),
+    new Book("All Quiet on the Western Front", "Erich Maria Remarque", 200),
+    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", 1276),
+];
 
 library = testLibrary;
 

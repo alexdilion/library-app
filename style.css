@@ -1,138 +1,176 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;800&display=swap");
 
 @media screen and (max-width: 780px) {
-	div.cards-container {
+    div.cards-container {
+        max-width: 500px;
+    }
+
+	div.controls-container {
 		max-width: 500px;
 	}
 }
 
+/* General page styling and layout */
+
 * {
-	font-family: Poppins, 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-	box-sizing: border-box;
+    font-family: Poppins, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 body {
-	min-height: 100vh;
-	margin: 0;
-	
-	display: flex;
-	flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+
+    display: flex;
+    flex-direction: column;
 }
 
-header, footer {
-	background-color: #1b1b2d;
-	color: white;
+header,
+footer {
+    background-color: #1b1b2d;
+    color: white;
 }
 
 .title {
-	margin: 1.5rem 0;
+    margin: 1.5rem 0;
 }
 
-.title, footer p {
-	text-align: center;
+.title,
+footer p {
+    text-align: center;
 }
 
 main {
-	flex: 1;
-	padding: 2rem;
-	color: #1b1b2d;
+    flex: 1;
+    padding: 2rem;
+    color: #1b1b2d;
 }
 
-.cards-container {
-	max-width: 1200px;
-	margin: 0 auto;
+/* Library controls styling */
 
-	display: grid;
-	gap: 1rem;
-	grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+.controls-container {
+	margin: 0 auto 1rem;
+	max-width: 1200px;
+}
+
+#button-new-card {
+	font-size: 1.5rem;
+	font-weight: 800;
+	border: 1px solid #ccc;
+	border-radius: .5rem;
+	padding: .5rem 1rem;
+	background-color: white;
+	color: #2e86de;
+}
+
+#button-new-card:hover {
+	color: white;
+	background-color: #2e86de;
+	cursor: pointer;
+}
+
+#button-new-card:active {
+	border-color: #1b1b2d;
+}
+
+/* Card styling */
+
+.cards-container {
+    max-width: 1200px;
+    margin: 0 auto;
+
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
 }
 
 .card {
-	max-width: 500px;
+    max-width: 500px;
     padding: 1rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
 
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .card * {
-	margin: 0;
-	font-size: 1rem;
+    margin: 0;
+    font-size: 1rem;
 }
 
 .card .book-name {
-	font-size: 1.5rem;
+    font-size: 1.5rem;
+	color: #161662;
 }
 
 .book-status {
-	margin-top: .5rem;
+    margin-top: 0.5rem;
 }
 
 .status-text {
-	padding: 2px 10px;
-	border-radius: 4px;
-	margin-left: 4px;
-	color: white;
-	font-weight: bold;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin-left: 4px;
+    color: white;
+    font-weight: 800;
 }
 
 .card hr {
-	margin: 1rem 0;
-	border: 0;
-	height: 1px;
-	background-color: #ccc;
+    margin: 1rem 0;
+    border: 0;
+    height: 1px;
+    background-color: #ccc;
 }
 
 .unread {
-	background-color: #ff9f43;
+    background-color: #ff9f43;
 }
 
 .read {
-	background-color: #1dd1a1;
+    background-color: #1dd1a1;
 }
 
 .card .actions {
-	display: flex;
-	justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .card-button {
-	padding: 4px 10px;
-	border-radius: 6px;
-	font-weight: bold;
-	border: 1px solid #ccc;
-	background-color: white;
-	transition: background-color .25s ease-out, color .25s ease-out;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 800;
+    border: 1px solid #ccc;
+    background-color: white;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
 }
 
 .card-button:hover {
-	cursor: pointer;
-	color: white;
+    cursor: pointer;
+    color: white;
 }
 
 .card-button:active {
-	filter: brightness(1.25)
+    border-color: #1b1b2d;
 }
 
 .button-edit {
-	color: #2e86de;
+    color: #2e86de;
 }
 
 .button-edit:hover {
-	background-color: #2e86de;
+    background-color: #2e86de;
 }
 
 .button-delete {
-	color: #ee5253;
+    color: #ee5253;
 }
 
 .button-delete:hover {
-	background-color: #ee5253;
+    background-color: #ee5253;
 }
 
 #card-template {
-	display: none;
+    display: none;
 }
