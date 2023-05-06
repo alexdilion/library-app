@@ -13,46 +13,7 @@
             <h1 class="title">My Library</h1>
         </header>
         <main>
-            <div id="card-container">
-                <div class="card">
-                    <div class="card-main">
-                        <div class="card-header">
-                            <h3 class="book-name">A Game of Thrones</h3>
-                            <p class="book-author">By George R.R. Martin</p>
-                        </div>
-                        <hr />
-                        <p class="book-length">Book length: 774 pages</p>
-                        <p class="book-status">
-                            Status:
-                            <span class="status-text read">Read</span>
-                        </p>
-                    </div>
-                    <hr />
-                    <div class="actions">
-                        <button type="button" class="card-button button-edit">Edit</button>
-                        <button type="button" class="card-button button-delete">Delete</button>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-main">
-                        <div class="card-header">
-                            <h3 class="book-name">Harry Potter and the Philosopher's Stone</h3>
-                            <p class="book-author">By J.K. Rowling</p>
-                        </div>
-                        <hr />
-                        <p class="book-length">Book length: 223 pages</p>
-                        <p class="book-status">
-                            Status:
-                            <span class="status-text read">Read</span>
-                        </p>
-                    </div>
-                    <hr />
-                    <div class="actions">
-                        <button type="button" class="card-button button-edit">Edit</button>
-                        <button type="button" class="card-button button-delete">Delete</button>
-                    </div>
-                </div>
-            </div>
+            <div class="cards-container"></div>
         </main>
         <footer>
             <p>
@@ -64,22 +25,22 @@
             </p>
         </footer>
         <div id="card-template" class="card" aria-hidden="true">
-            <div class="card-main">
-                <div class="card-header">
-                    <h3 class="book-name"></h3>
-                    <p class="book-author"></p>
-                </div>
+            <div class="card-header">
+                <h3 class="book-name"></h3>
+                <p class="book-author"></p>
+            </div>
+            <div class="card-body">
                 <hr />
                 <p class="book-length"></p>
                 <p class="book-status">
                     Status:
                     <span class="status-text">Read</span>
                 </p>
-            </div>
-            <hr />
-            <div class="actions">
-                <button type="button" class="card-button button-edit">Edit</button>
-                <button type="button" class="card-button button-delete">Delete</button>
+                <hr />
+                <div class="actions">
+                    <button type="button" class="card-button button-edit">Edit</button>
+                    <button type="button" class="card-button button-delete">Delete</button>
+                </div>
             </div>
         </div>
     </body>

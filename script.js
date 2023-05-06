@@ -1,6 +1,12 @@
 const CARD_TEMPLATE = document.querySelector("#card-template");
-const CARD_CONTAINER = document.querySelector("#card-container");
+const CARDS_CONTAINER = document.querySelector(".cards-container");
 
+let testLibrary = [
+    new Book("All Quiet on the Western Front", "Erich Maria Remarque", 200),
+    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", 1276),
+    new Book("A Game of Thrones", "George R.R. Martin", 774, true),
+    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223, true),
+];
 let library = [];
 
 function Book(name, author, length, read = false) {
@@ -20,34 +26,31 @@ function setCardDetails(card, book) {
     card.querySelector(".book-author").textContent = `By ${book.author}`;
     card.querySelector(".book-length").textContent = `Book length: ${book.length} pages`;
 
-	let statusText = card.querySelector(".status-text");
+    let statusText = card.querySelector(".status-text");
 
     if (book.read) {
         statusText.textContent = "Read";
         statusText.classList.add("read");
-		statusText.classList.remove("unread")
+        statusText.classList.remove("unread");
     } else {
-		statusText.textContent = "Unread";
-		statusText.classList.add("unread");
-		statusText.classList.remove("read");
-	}
+        statusText.textContent = "Unread";
+        statusText.classList.add("unread");
+        statusText.classList.remove("read");
+    }
 }
 
 function displayBooks() {
-	console.log(library);
-    library.forEach(book => {
-		let card = CARD_TEMPLATE.cloneNode(true);
+    library.forEach((book, index) => {
+        let card = CARD_TEMPLATE.cloneNode(true);
+        card.setAttribute("data-card-index", index);
         card.removeAttribute("id");
         card.removeAttribute("aria-hidden");
-        CARD_CONTAINER.appendChild(card);
+        CARDS_CONTAINER.appendChild(card);
 
         setCardDetails(card, book);
-	})
+    });
 }
 
-const firstBook = new Book("All Quiet on the Western Front", "Erich Maria Remarque", 200);
-const secondBook = new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", 1276);
-addBookToLibrary(firstBook);
-addBookToLibrary(secondBook)
+library = testLibrary;
 
-displayBooks()
+displayBooks();
