@@ -101,27 +101,35 @@ main {
 
 .card-button {
 	padding: 4px 10px;
-	border: none;
-	border-radius: 4px;
-	color: white;
+	border-radius: 6px;
 	font-weight: bold;
+	border: 1px solid #ccc;
+	background-color: white;
+	transition: background-color .25s ease-out, color .25s ease-out;
 }
 
 .card-button:hover {
-	border: 2px solid #1b1b2d;
 	cursor: pointer;
-	margin: -2px;
+	color: white;
 }
 
 .card-button:active {
-	filter: brightness(.9);
+	filter: brightness(1.25)
 }
 
 .button-edit {
+	color: #2e86de;
+}
+
+.button-edit:hover {
 	background-color: #2e86de;
 }
 
 .button-delete {
+	color: #ee5253;
+}
+
+.button-delete:hover {
 	background-color: #ee5253;
 }
 
