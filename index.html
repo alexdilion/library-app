@@ -4,8 +4,11 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Library App</title>
+        <title>My Library</title>
         <link rel="stylesheet" href="style.css" />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0" />
         <script src="script.js" defer></script>
     </head>
     <body>
@@ -13,9 +16,9 @@
             <h1 class="title">My Library</h1>
         </header>
         <main>
-			<div class="controls-container">
-				<button type="button" id="button-new-card">+ New Book</button>
-			</div>
+            <div class="controls-container">
+                <button type="button" class="button-new-card" id="button-new-card">+ New Book</button>
+            </div>
             <div class="cards-container"></div>
         </main>
         <footer>
@@ -27,24 +30,95 @@
                 </script>
             </p>
         </footer>
-        <div id="card-template" class="card" aria-hidden="true">
-            <div class="card-header">
-                <h3 class="book-name"></h3>
-                <p class="book-author"></p>
-            </div>
-            <div class="card-body">
-                <hr />
-                <p class="book-length"></p>
-                <p class="book-status">
-                    Status:
-                    <span class="status-text">Read</span>
-                </p>
-                <hr />
-                <div class="actions">
-                    <button type="button" class="card-button button-edit">Edit</button>
-                    <button type="button" class="card-button button-delete">Delete</button>
+        <div class="display-none">
+            <div id="card-template" class="card">
+                <div class="card-header">
+                    <h3 class="book-name"></h3>
+                    <p class="book-author"></p>
+                </div>
+                <div class="card-body">
+                    <hr />
+                    <p class="book-length"></p>
+                    <p class="book-status">
+                        Status:
+                        <span class="status-text">Read</span>
+                    </p>
+                    <hr />
+                    <div class="actions">
+                        <button type="button" class="card-button button-edit">Edit</button>
+                        <button type="button" class="card-button button-delete">Delete</button>
+                    </div>
                 </div>
             </div>
+        </div>
+        <div class="modal-new-book display-none">
+            <h3 class="form-header">Add a New Book</h3>
+            <p>
+                Fields marked with an
+                <span aria-label="asterisk" class="required-asterisk">*</span>
+                are required
+            </p>
+            <form action="" class="form-new-book">
+                <div>
+                    <label for="text-book-name">
+                        Title
+                        <span class="required-asterisk" aria-label="required">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="book-name"
+                        id="text-book-name"
+                        minlength="1"
+                        class="required-input activated"
+                        required />
+                    <p class="hidden error-message">
+                        <span class="material-symbols-outlined" aria-label="Attention!">error</span>
+                        Please enter the book's title
+                    </p>
+                </div>
+                <div>
+                    <label for="text-book-author">
+                        Author
+                        <span class="required-asterisk" aria-label="required">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="book-author"
+                        id="text-book-author"
+                        minlength="1"
+                        required
+                        class="required-input" />
+                    <p class="hidden error-message">
+                        <span class="material-symbols-outlined" aria-label="Attention!">error</span>
+                        Please enter the book's author
+                    </p>
+                </div>
+                <div>
+                    <label for="text-book-length">
+                        Number of Pages
+                        <span class="required-asterisk" aria-label="required">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        name="book-length"
+                        id="text-book-length"
+                        minlength="1"
+                        required
+                        class="required-input" />
+                    <p class="hidden error-message">
+                        <span class="material-symbols-outlined" aria-label="Attention!">error</span>
+                        Please enter the book's length
+                    </p>
+                </div>
+                <div class="status-container">
+                    <label for="text-book-read">Read</label>
+                    <input type="checkbox" name="chk-book-read" id="text-book-read" />
+                </div>
+                <button type="submit" class="button-new-card">Add Book</button>
+            </form>
+            <button type="button" class="button-close">
+                <span class="material-symbols-outlined" aria-label="Close new book form">close</span>
+            </button>
         </div>
     </body>
 </html>

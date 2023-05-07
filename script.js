@@ -40,7 +40,6 @@ function displayBooks() {
         const card = CARD_TEMPLATE.cloneNode(true);
         card.setAttribute("data-card-index", index);
         card.removeAttribute("id");
-        card.removeAttribute("aria-hidden");
         CARDS_CONTAINER.appendChild(card);
 
         setCardDetails(card, book);
@@ -48,10 +47,10 @@ function displayBooks() {
 }
 
 const testLibrary = [
-    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", 223, true),
-    new Book("War and Peace", "Leo Tolstoy", 1225, true),
-    new Book("All Quiet on the Western Front", "Erich Maria Remarque", 200),
-    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", 1276),
+    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
+    new Book("War and Peace", "Leo Tolstoy", "1,225", true),
+    new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200"),
+    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1,276"),
 ];
 
 library = testLibrary;

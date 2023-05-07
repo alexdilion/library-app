@@ -5,9 +5,15 @@
         max-width: 500px;
     }
 
-	div.controls-container {
-		max-width: 500px;
-	}
+    div.controls-container {
+        max-width: 500px;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    body > main {
+        padding: 2rem 0.5rem;
+    }
 }
 
 /* General page styling and layout */
@@ -15,6 +21,7 @@
 * {
     font-family: Poppins, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
     box-sizing: border-box;
+    color: #1b1b2d;
 }
 
 body {
@@ -26,7 +33,7 @@ body {
 }
 
 header,
-footer {
+.title {
     background-color: #1b1b2d;
     color: white;
 }
@@ -49,28 +56,28 @@ main {
 /* Library controls styling */
 
 .controls-container {
-	margin: 0 auto 1rem;
-	max-width: 1200px;
+    margin: 0 auto 1rem;
+    max-width: 1200px;
 }
 
-#button-new-card {
-	font-size: 1.5rem;
-	font-weight: 800;
-	border: 1px solid #ccc;
-	border-radius: .5rem;
-	padding: .5rem 1rem;
-	background-color: white;
-	color: #2e86de;
+.button-new-card {
+    font-size: 1.5rem;
+    font-weight: 800;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: white;
+    color: #2e86de;
 }
 
-#button-new-card:hover {
-	color: white;
-	background-color: #2e86de;
-	cursor: pointer;
+.button-new-card:hover {
+    color: white;
+    background-color: #2e86de;
+    cursor: pointer;
 }
 
-#button-new-card:active {
-	border-color: #1b1b2d;
+.button-new-card:active {
+    border-color: #1b1b2d;
 }
 
 /* Card styling */
@@ -102,7 +109,7 @@ main {
 
 .card .book-name {
     font-size: 1.5rem;
-	color: #161662;
+    color: #161662;
 }
 
 .book-status {
@@ -171,6 +178,6 @@ main {
     background-color: #ee5253;
 }
 
-#card-template {
+.display-none {
     display: none;
 }
