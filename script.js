@@ -4,6 +4,7 @@ const CARDS_CONTAINER = document.querySelector(".cards-container");
 const MODAL_WRAPPER = document.querySelector(".modal-wrapper");
 const OPEN_FORM_BUTTON = document.querySelector("#button-open-form");
 const CLOSE_FORM_BUTTON = document.querySelector("#button-close-form");
+const REQUIRED_INPUTS = document.querySelectorAll(".required-input");
 const MAIN_SECTION = document.querySelector("main");
 
 let library = [];
@@ -58,6 +59,7 @@ function displayBooks() {
 function toggleForm() {
     if (!formVisible) {
         MODAL_WRAPPER.classList.remove("display-none");
+		MODAL_WRAPPER.querySelector("#text-book-name").focus()
         MAIN_SECTION.classList.add("blur");
     } else {
         MODAL_WRAPPER.classList.add("display-none");
@@ -68,7 +70,7 @@ function toggleForm() {
 }
 
 // Check if the user clicked outside the modal form
-//
+// If they did, close the form
 function checkClickedOutsideModal(e) {
     const clickX = e.clientX;
     const clickY = e.clientY;
@@ -83,14 +85,22 @@ function checkClickedOutsideModal(e) {
         clickX > modalX + modal.offsetWidth ||
         clickY > modalY + modal.offsetHeight
     ) {
-		toggleForm();
+        toggleForm();
+    }
+}
+
+// "Activate" input after they've been selected once
+// This prevents errors from showing up before the user has interacted with the inputs
+function activateInput(input) {
+    if (!input.classList.contains("activated")) {
+        input.classList.add("activated");
     }
 }
 
 const testLibrary = [
     new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
-    new Book("War and Peace", "Leo Tolstoy", "1,225", true),
-    new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200"),
+    new Book("War and Peace", "Leo Tolstoy", "1,225"),
+    new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200", true),
     new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1,276"),
 ];
 
@@ -103,4 +113,8 @@ CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
 
 document.addEventListener("click", (e) => {
     if (formVisible && e.target !== OPEN_FORM_BUTTON) checkClickedOutsideModal(e);
+});
+
+REQUIRED_INPUTS.forEach((input) => {
+    input.addEventListener("focusout", (e) => activateInput(e.target));
 });
