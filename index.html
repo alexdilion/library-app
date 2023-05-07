@@ -17,7 +17,7 @@
         </header>
         <main>
             <div class="controls-container">
-                <button type="button" class="button-new-card" id="button-new-card">+ New Book</button>
+                <button type="button" class="button-new-card" id="button-open-form">+ New Book</button>
             </div>
             <div class="cards-container"></div>
         </main>
@@ -51,74 +51,76 @@
                 </div>
             </div>
         </div>
-        <div class="modal-new-book display-none">
-            <h3 class="form-header">Add a New Book</h3>
-            <p>
-                Fields marked with an
-                <span aria-label="asterisk" class="required-asterisk">*</span>
-                are required
-            </p>
-            <form action="" class="form-new-book">
-                <div>
-                    <label for="text-book-name">
-                        Title
-                        <span class="required-asterisk" aria-label="required">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        name="book-name"
-                        id="text-book-name"
-                        minlength="1"
-                        class="required-input activated"
-                        required />
-                    <p class="hidden error-message">
-                        <span class="material-symbols-outlined" aria-label="Attention!">error</span>
-                        Please enter the book's title
-                    </p>
-                </div>
-                <div>
-                    <label for="text-book-author">
-                        Author
-                        <span class="required-asterisk" aria-label="required">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        name="book-author"
-                        id="text-book-author"
-                        minlength="1"
-                        required
-                        class="required-input" />
-                    <p class="hidden error-message">
-                        <span class="material-symbols-outlined" aria-label="Attention!">error</span>
-                        Please enter the book's author
-                    </p>
-                </div>
-                <div>
-                    <label for="text-book-length">
-                        Number of Pages
-                        <span class="required-asterisk" aria-label="required">*</span>
-                    </label>
-                    <input
-                        type="text"
-                        name="book-length"
-                        id="text-book-length"
-                        minlength="1"
-                        required
-                        class="required-input" />
-                    <p class="hidden error-message">
-                        <span class="material-symbols-outlined" aria-label="Attention!">error</span>
-                        Please enter the book's length
-                    </p>
-                </div>
-                <div class="status-container">
-                    <label for="text-book-read">Read</label>
-                    <input type="checkbox" name="chk-book-read" id="text-book-read" />
-                </div>
-                <button type="submit" class="button-new-card">Add Book</button>
-            </form>
-            <button type="button" class="button-close">
-                <span class="material-symbols-outlined" aria-label="Close new book form">close</span>
-            </button>
+        <div class="modal-wrapper display-none">
+            <div class="modal-new-book">
+                <h3 class="form-header">Add a New Book</h3>
+                <p>
+                    Fields marked with an
+                    <span aria-label="asterisk" class="required-asterisk">*</span>
+                    are required
+                </p>
+                <form action="" class="form-new-book">
+                    <div>
+                        <label for="text-book-name">
+                            Title
+                            <span class="required-asterisk" aria-label="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="book-name"
+                            id="text-book-name"
+                            minlength="1"
+                            class="required-input activated"
+                            required />
+                        <p class="hidden error-message">
+                            <span class="material-symbols-outlined" aria-label="Attention!">error</span>
+                            Please enter the book's title
+                        </p>
+                    </div>
+                    <div>
+                        <label for="text-book-author">
+                            Author
+                            <span class="required-asterisk" aria-label="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="book-author"
+                            id="text-book-author"
+                            minlength="1"
+                            required
+                            class="required-input" />
+                        <p class="hidden error-message">
+                            <span class="material-symbols-outlined" aria-label="Attention!">error</span>
+                            Please enter the book's author
+                        </p>
+                    </div>
+                    <div>
+                        <label for="text-book-length">
+                            Number of Pages
+                            <span class="required-asterisk" aria-label="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            name="book-length"
+                            id="text-book-length"
+                            minlength="1"
+                            required
+                            class="required-input" />
+                        <p class="hidden error-message">
+                            <span class="material-symbols-outlined" aria-label="Attention!">error</span>
+                            Please enter the book's length
+                        </p>
+                    </div>
+                    <div class="status-container">
+                        <label for="text-book-read">Read</label>
+                        <input type="checkbox" name="chk-book-read" id="text-book-read" />
+                    </div>
+                    <button type="submit" class="button-new-card">Add Book</button>
+                </form>
+                <button type="button" class="button-close" id="button-close-form">
+                    <span class="material-symbols-outlined" aria-label="Close new book form">close</span>
+                </button>
+            </div>
         </div>
     </body>
 </html>

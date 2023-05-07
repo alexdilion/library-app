@@ -27,10 +27,16 @@
 body {
     min-height: 100vh;
     margin: 0;
-	position: relative;
 
     display: flex;
     flex-direction: column;
+}
+
+.modal-wrapper {
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	background-color: rgba(0,0,0,.1);
 }
 
 header,
@@ -60,6 +66,10 @@ main {
 
 .hidden {
 	opacity: 0;
+}
+
+.blur {
+	filter: blur(10px);
 }
 
 /* Library controls styling */
@@ -301,6 +311,10 @@ div.status-container {
 	border: none;
 	background-color: white;
 	cursor: pointer;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
 
 	position: absolute;
 	top: 1rem;

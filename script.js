@@ -1,22 +1,29 @@
 /* eslint-disable no-param-reassign */
 const CARD_TEMPLATE = document.querySelector("#card-template");
 const CARDS_CONTAINER = document.querySelector(".cards-container");
+const MODAL_WRAPPER = document.querySelector(".modal-wrapper");
+const OPEN_FORM_BUTTON = document.querySelector("#button-open-form");
+const CLOSE_FORM_BUTTON = document.querySelector("#button-close-form");
+const MAIN_SECTION = document.querySelector("main");
 
 let library = [];
+let formVisible = false;
 
+// Book constructor
 function Book(name, author, length, read = false) {
-    // Constructor
     this.name = name;
     this.author = author;
     this.length = length;
     this.read = read;
 }
 
+// Add book to library
 // eslint-disable-next-line no-unused-vars
 function addBookToLibrary(book) {
     library.push(book);
 }
 
+// Set the details of a book's card
 function setCardDetails(card, book) {
     card.querySelector(".book-name").textContent = book.name;
     card.querySelector(".book-author").textContent = `By ${book.author}`;
@@ -35,6 +42,7 @@ function setCardDetails(card, book) {
     }
 }
 
+// Display all books in the library array
 function displayBooks() {
     library.forEach((book, index) => {
         const card = CARD_TEMPLATE.cloneNode(true);
@@ -44,6 +52,39 @@ function displayBooks() {
 
         setCardDetails(card, book);
     });
+}
+
+// Show or hide modal form
+function toggleForm() {
+    if (!formVisible) {
+        MODAL_WRAPPER.classList.remove("display-none");
+        MAIN_SECTION.classList.add("blur");
+    } else {
+        MODAL_WRAPPER.classList.add("display-none");
+        MAIN_SECTION.classList.remove("blur");
+    }
+
+    formVisible = !formVisible;
+}
+
+// Check if the user clicked outside the modal form
+//
+function checkClickedOutsideModal(e) {
+    const clickX = e.clientX;
+    const clickY = e.clientY;
+
+    const modal = MODAL_WRAPPER.children[0];
+    const modalX = modal.getBoundingClientRect().x;
+    const modalY = modal.getBoundingClientRect().y;
+
+    if (
+        clickX < modalX ||
+        clickY < modalY ||
+        clickX > modalX + modal.offsetWidth ||
+        clickY > modalY + modal.offsetHeight
+    ) {
+		toggleForm();
+    }
 }
 
 const testLibrary = [
@@ -56,3 +97,10 @@ const testLibrary = [
 library = testLibrary;
 
 displayBooks();
+
+OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
+CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
+
+document.addEventListener("click", (e) => {
+    if (formVisible && e.target !== OPEN_FORM_BUTTON) checkClickedOutsideModal(e);
+});
