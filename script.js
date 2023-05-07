@@ -1,9 +1,9 @@
-/* eslint-disable no-param-reassign */
 const CARD_TEMPLATE = document.querySelector("#card-template");
 const CARDS_CONTAINER = document.querySelector(".cards-container");
 const MODAL_WRAPPER = document.querySelector(".modal-wrapper");
 const OPEN_FORM_BUTTON = document.querySelector("#button-open-form");
 const CLOSE_FORM_BUTTON = document.querySelector("#button-close-form");
+const NEW_BOOK_FORM = document.querySelector(".form-new-book");
 const REQUIRED_INPUTS = document.querySelectorAll(".required-input");
 const MAIN_SECTION = document.querySelector("main");
 
@@ -26,40 +26,42 @@ function addBookToLibrary(book) {
 
 // Set the details of a book's card
 function setCardDetails(card, book) {
-    card.querySelector(".book-name").textContent = book.name;
+	card.querySelector(".book-name").textContent = book.name;
     card.querySelector(".book-author").textContent = `By ${book.author}`;
     card.querySelector(".book-length").textContent = `Book length: ${book.length} pages`;
-
+	
     const statusText = card.querySelector(".status-text");
-
+	
     if (book.read) {
-        statusText.textContent = "Read";
+		statusText.textContent = "Read";
         statusText.classList.add("read");
         statusText.classList.remove("unread");
     } else {
-        statusText.textContent = "Unread";
+		statusText.textContent = "Unread";
         statusText.classList.add("unread");
         statusText.classList.remove("read");
     }
 }
 
-// Display all books in the library array
+// Display all the books in the library array
 function displayBooks() {
-    library.forEach((book, index) => {
-        const card = CARD_TEMPLATE.cloneNode(true);
-        card.setAttribute("data-card-index", index);
-        card.removeAttribute("id");
-        CARDS_CONTAINER.appendChild(card);
+	CARDS_CONTAINER.innerHTML = "";
 
-        setCardDetails(card, book);
-    });
+	library.forEach((book, index) => {
+		const card = CARD_TEMPLATE.cloneNode(true);
+		card.setAttribute("data-card-index", index);
+		card.removeAttribute("id");
+		CARDS_CONTAINER.appendChild(card);
+
+		setCardDetails(card, book);
+	});
 }
 
 // Show or hide modal form
 function toggleForm() {
     if (!formVisible) {
         MODAL_WRAPPER.classList.remove("display-none");
-		MODAL_WRAPPER.querySelector("#text-book-name").focus()
+        MODAL_WRAPPER.querySelector("#text-book-name").focus();
         MAIN_SECTION.classList.add("blur");
     } else {
         MODAL_WRAPPER.classList.add("display-none");
@@ -69,11 +71,35 @@ function toggleForm() {
     formVisible = !formVisible;
 }
 
+// Get form data and make a book object with that data
+function makeBookFromForm(event) {
+	const {formData} = event;
+	const inputs = {}
+	
+	// eslint-disable-next-line prefer-const
+	for (let [key, value] of formData.entries()) {
+		if (value === "on") {
+			value = true
+		}
+
+		inputs[key] = value;
+	}
+
+	if (!("read" in inputs)) {
+		inputs.read = false;
+	}
+
+	const newBook = new Book(inputs.name, inputs.author, inputs.length, inputs.read);
+	addBookToLibrary(newBook);
+	toggleForm();
+	displayBooks();
+}
+
 // Check if the user clicked outside the modal form
 // If they did, close the form
-function checkClickedOutsideModal(e) {
-    const clickX = e.clientX;
-    const clickY = e.clientY;
+function checkClickedOutsideModal(event) {
+    const clickX = event.clientX;
+    const clickY = event.clientY;
 
     const modal = MODAL_WRAPPER.children[0];
     const modalX = modal.getBoundingClientRect().x;
@@ -99,9 +125,9 @@ function activateInput(input) {
 
 const testLibrary = [
     new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
-    new Book("War and Peace", "Leo Tolstoy", "1,225"),
+    new Book("War and Peace", "Leo Tolstoy", "1225"),
     new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200", true),
-    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1,276"),
+    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1276"),
 ];
 
 library = testLibrary;
@@ -111,10 +137,18 @@ displayBooks();
 OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
 CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
 
-document.addEventListener("click", (e) => {
-    if (formVisible && e.target !== OPEN_FORM_BUTTON) checkClickedOutsideModal(e);
+REQUIRED_INPUTS.forEach((input) => {
+    input.addEventListener("focusout", (event) => activateInput(event.target));
 });
 
-REQUIRED_INPUTS.forEach((input) => {
-    input.addEventListener("focusout", (e) => activateInput(e.target));
+document.addEventListener("click", (event) => {
+    if (formVisible && event.target !== OPEN_FORM_BUTTON) checkClickedOutsideModal(event);
 });
+
+NEW_BOOK_FORM.addEventListener("submit", (event) => {
+    event.preventDefault();
+	// eslint-disable-next-line no-unused-vars
+	const formData = new FormData(NEW_BOOK_FORM);
+});
+
+NEW_BOOK_FORM.addEventListener("formdata", makeBookFromForm);
