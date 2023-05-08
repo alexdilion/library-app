@@ -1,14 +1,18 @@
-const CARD_TEMPLATE = document.querySelector("#card-template");
+const MAIN_SECTION = document.querySelector("main");
 const CARDS_CONTAINER = document.querySelector(".cards-container");
+const CARD_TEMPLATE = document.querySelector("#card-template");
+
 const MODAL_WRAPPER = document.querySelector(".modal-wrapper");
 const OPEN_FORM_BUTTON = document.querySelector("#button-open-form");
 const CLOSE_FORM_BUTTON = document.querySelector("#button-close-form");
 const NEW_BOOK_FORM = document.querySelector(".form-new-book");
 const REQUIRED_INPUTS = document.querySelectorAll(".required-input");
-const MAIN_SECTION = document.querySelector("main");
+const FORM_INPUTS = Array.from(NEW_BOOK_FORM.querySelectorAll("input"));
 
 let library = [];
 let formVisible = false;
+let editingBook = false;
+let currentIndex = 0;
 
 // Book constructor
 function Book(name, author, length, read = false) {
@@ -24,7 +28,8 @@ function addBookToLibrary(book) {
 }
 
 // Set the details of a book's card
-function setCardDetails(card, book) {
+function setCardDetails(book, bookIndex) {
+    const card = CARDS_CONTAINER.querySelector(`[data-card-index="${bookIndex}"]`);
     card.querySelector(".book-name").textContent = book.name;
     card.querySelector(".book-author").textContent = `By ${book.author}`;
     card.querySelector(".book-length").textContent = `Book length: ${book.length} pages`;
@@ -52,7 +57,7 @@ function displayBooks() {
         card.removeAttribute("id");
         CARDS_CONTAINER.appendChild(card);
 
-        setCardDetails(card, book);
+        setCardDetails(book, index);
     });
 }
 
@@ -67,27 +72,35 @@ function toggleForm() {
         MAIN_SECTION.classList.remove("blur");
     }
 
+    if (editingBook) {
+        MODAL_WRAPPER.querySelector(".form-header").textContent = "Edit Book";
+        MODAL_WRAPPER.querySelector("#form-submit-button").textContent = "Edit Book";
+    } else {
+        MODAL_WRAPPER.querySelector(".form-header").textContent = "Add a New Book";
+        MODAL_WRAPPER.querySelector("#form-submit-button").textContent = "Add Book";
+    }
+
     formVisible = !formVisible;
 }
 
-// Get form data and make a book object with that data
-function makeBookFromForm(event) {
-    const {formData} = event;
-    const inputs = {};
+function getFormData() {
+    const inputs = FORM_INPUTS.reduce((acc, input) => {
+        const {name} = input;
+        let {value} = input;
 
-    // eslint-disable-next-line prefer-const
-    for (let [key, value] of formData.entries()) {
-        if (value === "on") {
-            value = true;
+        if (input.type === "checkbox") {
+            value = input.checked;
         }
 
-        inputs[key] = value;
-    }
+        return {...acc, [name]: value};
+    }, {});
 
-    if (!("read" in inputs)) {
-        inputs.read = false;
-    }
+    return inputs;
+}
 
+// Get form data and make a book object with that data
+function makeBookFromForm() {
+    const inputs = getFormData();
     const newBook = new Book(inputs.name, inputs.author, inputs.length, inputs.read);
     addBookToLibrary(newBook);
     toggleForm();
@@ -97,6 +110,20 @@ function makeBookFromForm(event) {
 // Remove the book at the given index from the library
 function removeBookFromLibrary(bookIndex) {
     library.splice(bookIndex, 1);
+    displayBooks();
+}
+
+// Edit the book at the given library index
+function editBookFromLibrary(bookIndex) {
+    const inputs = getFormData();
+    const book = library[bookIndex];
+
+    Object.keys(inputs).forEach((key) => {
+        book[key] = inputs[key];
+    });
+
+    editingBook = false;
+    toggleForm();
     displayBooks();
 }
 
@@ -121,15 +148,25 @@ function onModalClick(event) {
 }
 
 // Handle card button clicks
-function onCardButtonClicked(event) {
-    const button = event.target;
+function onCardButtonClicked(button) {
     const card = button.closest(".card");
     const cardIndex = card.getAttribute("data-card-index");
 
     if (button.classList.contains("button-delete")) {
         removeBookFromLibrary(cardIndex);
     } else if (button.classList.contains("button-edit")) {
-        console.log("edit");
+        editingBook = true;
+        currentIndex = cardIndex;
+
+        FORM_INPUTS.forEach((input) => {
+            if (input.type === "checkbox") {
+                input.checked = library[currentIndex][input.name];
+            } else {
+                input.value = library[currentIndex][input.name];
+            }
+        });
+
+        toggleForm();
     }
 }
 
@@ -157,20 +194,28 @@ displayBooks();
 OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
 CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
 
+CARDS_CONTAINER.addEventListener("click", (event) => {
+    if (event.target.classList.contains("card-button")) {
+        onCardButtonClicked(event.target);
+    }
+});
+
 REQUIRED_INPUTS.forEach((input) => {
     input.addEventListener("focusout", (event) => activateInput(event.target));
 });
 
-document.addEventListener("click", (event) => {
-    if (formVisible && event.target !== OPEN_FORM_BUTTON) onModalClick(event);
-
-    if (event.target.classList.contains("card-button")) onCardButtonClicked(event);
+document.addEventListener("mousedown", (event) => {
+    if (formVisible && event.target !== OPEN_FORM_BUTTON) {
+        onModalClick(event);
+    }
 });
 
 NEW_BOOK_FORM.addEventListener("submit", (event) => {
     event.preventDefault();
-    // eslint-disable-next-line no-unused-vars
-    const formData = new FormData(NEW_BOOK_FORM);
-});
 
-NEW_BOOK_FORM.addEventListener("formdata", makeBookFromForm);
+    if (editingBook) {
+        editBookFromLibrary(currentIndex);
+    } else {
+        makeBookFromForm();
+    }
+});

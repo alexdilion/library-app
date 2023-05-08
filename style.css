@@ -295,6 +295,7 @@ main {
 }
 
 .error-message span {
+	user-select: none;
     font-size: 1.25rem;
 }
 
