@@ -61,6 +61,21 @@ function displayBooks() {
     });
 }
 
+function getFormData() {
+    const inputs = FORM_INPUTS.reduce((acc, input) => {
+        const {name} = input;
+        let {value} = input;
+
+        if (input.type === "checkbox") {
+            value = input.checked;
+        }
+
+        return {...acc, [name]: value};
+    }, {});
+
+    return inputs;
+}
+
 // Show or hide modal form
 function toggleForm() {
     if (!formVisible) {
@@ -78,24 +93,21 @@ function toggleForm() {
     } else {
         MODAL_WRAPPER.querySelector(".form-header").textContent = "Add a New Book";
         MODAL_WRAPPER.querySelector("#form-submit-button").textContent = "Add Book";
+
+        const inputs = NEW_BOOK_FORM.querySelectorAll("input");
+
+        inputs.forEach((input) => {
+            if (input.type === "checkbox") {
+                input.checked = false;
+            } else {
+                input.value = "";
+            }
+
+            input.classList.remove("activated");
+        });
     }
 
     formVisible = !formVisible;
-}
-
-function getFormData() {
-    const inputs = FORM_INPUTS.reduce((acc, input) => {
-        const {name} = input;
-        let {value} = input;
-
-        if (input.type === "checkbox") {
-            value = input.checked;
-        }
-
-        return {...acc, [name]: value};
-    }, {});
-
-    return inputs;
 }
 
 // Get form data and make a book object with that data
@@ -144,6 +156,7 @@ function onModalClick(event) {
         clickY > modalY + modal.offsetHeight
     ) {
         toggleForm();
+        editingBook = false;
     }
 }
 
@@ -193,6 +206,13 @@ displayBooks();
 
 OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
 CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
+
+NEW_BOOK_FORM.querySelector("#form-submit-button").addEventListener("click", () => {
+	console.log(NEW_BOOK_FORM.checkValidity());
+    if (!NEW_BOOK_FORM.checkValidity()) {
+        REQUIRED_INPUTS.forEach((input) => activateInput(input));
+    }
+});
 
 CARDS_CONTAINER.addEventListener("click", (event) => {
     if (event.target.classList.contains("card-button")) {
