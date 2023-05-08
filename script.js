@@ -19,25 +19,24 @@ function Book(name, author, length, read = false) {
 }
 
 // Add book to library
-// eslint-disable-next-line no-unused-vars
 function addBookToLibrary(book) {
     library.push(book);
 }
 
 // Set the details of a book's card
 function setCardDetails(card, book) {
-	card.querySelector(".book-name").textContent = book.name;
+    card.querySelector(".book-name").textContent = book.name;
     card.querySelector(".book-author").textContent = `By ${book.author}`;
     card.querySelector(".book-length").textContent = `Book length: ${book.length} pages`;
-	
+
     const statusText = card.querySelector(".status-text");
-	
+
     if (book.read) {
-		statusText.textContent = "Read";
+        statusText.textContent = "Read";
         statusText.classList.add("read");
         statusText.classList.remove("unread");
     } else {
-		statusText.textContent = "Unread";
+        statusText.textContent = "Unread";
         statusText.classList.add("unread");
         statusText.classList.remove("read");
     }
@@ -45,16 +44,16 @@ function setCardDetails(card, book) {
 
 // Display all the books in the library array
 function displayBooks() {
-	CARDS_CONTAINER.innerHTML = "";
+    CARDS_CONTAINER.innerHTML = "";
 
-	library.forEach((book, index) => {
-		const card = CARD_TEMPLATE.cloneNode(true);
-		card.setAttribute("data-card-index", index);
-		card.removeAttribute("id");
-		CARDS_CONTAINER.appendChild(card);
+    library.forEach((book, index) => {
+        const card = CARD_TEMPLATE.cloneNode(true);
+        card.setAttribute("data-card-index", index);
+        card.removeAttribute("id");
+        CARDS_CONTAINER.appendChild(card);
 
-		setCardDetails(card, book);
-	});
+        setCardDetails(card, book);
+    });
 }
 
 // Show or hide modal form
@@ -73,31 +72,37 @@ function toggleForm() {
 
 // Get form data and make a book object with that data
 function makeBookFromForm(event) {
-	const {formData} = event;
-	const inputs = {}
-	
-	// eslint-disable-next-line prefer-const
-	for (let [key, value] of formData.entries()) {
-		if (value === "on") {
-			value = true
-		}
+    const {formData} = event;
+    const inputs = {};
 
-		inputs[key] = value;
-	}
+    // eslint-disable-next-line prefer-const
+    for (let [key, value] of formData.entries()) {
+        if (value === "on") {
+            value = true;
+        }
 
-	if (!("read" in inputs)) {
-		inputs.read = false;
-	}
+        inputs[key] = value;
+    }
 
-	const newBook = new Book(inputs.name, inputs.author, inputs.length, inputs.read);
-	addBookToLibrary(newBook);
-	toggleForm();
-	displayBooks();
+    if (!("read" in inputs)) {
+        inputs.read = false;
+    }
+
+    const newBook = new Book(inputs.name, inputs.author, inputs.length, inputs.read);
+    addBookToLibrary(newBook);
+    toggleForm();
+    displayBooks();
+}
+
+// Remove the book at the given index from the library
+function removeBookFromLibrary(bookIndex) {
+    library.splice(bookIndex, 1);
+    displayBooks();
 }
 
 // Check if the user clicked outside the modal form
 // If they did, close the form
-function checkClickedOutsideModal(event) {
+function onModalClick(event) {
     const clickX = event.clientX;
     const clickY = event.clientY;
 
@@ -112,6 +117,19 @@ function checkClickedOutsideModal(event) {
         clickY > modalY + modal.offsetHeight
     ) {
         toggleForm();
+    }
+}
+
+// Handle card button clicks
+function onCardButtonClicked(event) {
+    const button = event.target;
+    const card = button.closest(".card");
+    const cardIndex = card.getAttribute("data-card-index");
+
+    if (button.classList.contains("button-delete")) {
+        removeBookFromLibrary(cardIndex);
+    } else if (button.classList.contains("button-edit")) {
+        console.log("edit");
     }
 }
 
@@ -134,6 +152,8 @@ library = testLibrary;
 
 displayBooks();
 
+// Events handled here
+
 OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
 CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
 
@@ -142,13 +162,15 @@ REQUIRED_INPUTS.forEach((input) => {
 });
 
 document.addEventListener("click", (event) => {
-    if (formVisible && event.target !== OPEN_FORM_BUTTON) checkClickedOutsideModal(event);
+    if (formVisible && event.target !== OPEN_FORM_BUTTON) onModalClick(event);
+
+    if (event.target.classList.contains("card-button")) onCardButtonClicked(event);
 });
 
 NEW_BOOK_FORM.addEventListener("submit", (event) => {
     event.preventDefault();
-	// eslint-disable-next-line no-unused-vars
-	const formData = new FormData(NEW_BOOK_FORM);
+    // eslint-disable-next-line no-unused-vars
+    const formData = new FormData(NEW_BOOK_FORM);
 });
 
 NEW_BOOK_FORM.addEventListener("formdata", makeBookFromForm);
