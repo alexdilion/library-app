@@ -33,10 +33,10 @@ body {
 }
 
 .modal-wrapper {
-	position: fixed;
-	height: 100%;
-	width: 100%;
-	background-color: rgba(0,0,0,.1);
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 header,
@@ -65,11 +65,11 @@ main {
 }
 
 .hidden {
-	opacity: 0;
+    opacity: 0;
 }
 
 .blur {
-	filter: blur(10px);
+    filter: blur(10px);
 }
 
 /* Library controls styling */
@@ -87,7 +87,7 @@ main {
     padding: 0.5rem 1rem;
     background-color: white;
     color: #2e86de;
-	transition: background-color 0.25s ease-out, color 0.25s ease-out;
+    transition: background-color 0.25s ease-out, color 0.25s ease-out;
 }
 
 .button-new-card:hover {
@@ -125,7 +125,7 @@ main {
 .card * {
     margin: 0;
     font-size: 1rem;
-	word-wrap: break-word;
+    word-wrap: break-word;
 }
 
 .card .book-name {
@@ -211,7 +211,7 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-	background-color: white;
+    background-color: white;
 }
 
 .modal-new-book * {
@@ -228,8 +228,8 @@ main {
 
 .modal-new-book > p {
     margin-bottom: 2rem;
-	text-align: center;
-	position: relative;
+    text-align: center;
+    position: relative;
 }
 
 .form-new-book {
@@ -252,7 +252,7 @@ main {
 }
 
 .form-new-book label > span {
-	font-weight: 500;
+    font-weight: 500;
 }
 
 .form-new-book input[type="text"] {
@@ -267,26 +267,26 @@ main {
 }
 
 .activated.required-input:invalid {
-	border-color: #ee5253;
+    border-color: #ee5253;
 }
 
 .activated.required-input:invalid + p {
-	opacity: 1;
+    opacity: 1;
 }
 
 .error-message {
-	position: absolute;
-	font-size: 0.75rem;
-	margin-top: 4px;
-	margin-left: calc(1px + .75rem);
-	bottom: -1.5rem;
-	opacity: 0;
+    position: absolute;
+    font-size: 0.75rem;
+    margin-top: 4px;
+    margin-left: calc(1px + 0.75rem);
+    bottom: -1.5rem;
+    opacity: 0;
 
-	display: flex;
-	align-items: center;
-	gap: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 
-	transition: opacity .25s ease-out;
+    transition: opacity 0.25s ease-out;
 }
 
 .error-message,
@@ -296,44 +296,44 @@ main {
 }
 
 .error-message span {
-	user-select: none;
+    user-select: none;
     font-size: 1.25rem;
 }
 
 div.status-container {
-	display: flex;
-	flex-direction: row;
-	align-items: center;
-	gap: 1rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
 }
 
 .status-container input {
-	user-select: none;
-	cursor: pointer;
-	opacity: 1;
-	height: 1.25rem;
-	width: 1.25rem;
+    user-select: none;
+    cursor: pointer;
+    opacity: 1;
+    height: 1.25rem;
+    width: 1.25rem;
 }
 
 .button-close {
-	border: none;
-	background-color: white;
-	cursor: pointer;
+    border: none;
+    background-color: white;
+    cursor: pointer;
 
-	display: flex;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
 }
 
 .button-close:hover > span {
-	color: #ee5253;
+    color: #ee5253;
 }
 
 .button-close span {
-	font-size: 2rem;
-	transition: color .25s ease-out;
+    font-size: 2rem;
+    transition: color 0.25s ease-out;
 }

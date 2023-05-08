@@ -208,7 +208,7 @@ OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
 CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
 
 NEW_BOOK_FORM.querySelector("#form-submit-button").addEventListener("click", () => {
-	console.log(NEW_BOOK_FORM.checkValidity());
+    console.log(NEW_BOOK_FORM.checkValidity());
     if (!NEW_BOOK_FORM.checkValidity()) {
         REQUIRED_INPUTS.forEach((input) => activateInput(input));
     }
