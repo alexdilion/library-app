@@ -81,9 +81,11 @@ function toggleForm() {
     if (!formVisible) {
         MODAL_WRAPPER.classList.remove("display-none");
         MODAL_WRAPPER.querySelector("#text-book-name").focus();
+        MODAL_WRAPPER.setAttribute("aria-hidden") = false;
         MAIN_SECTION.classList.add("blur");
     } else {
         MODAL_WRAPPER.classList.add("display-none");
+        MODAL_WRAPPER.setAttribute("aria-hidden") = true;
         MAIN_SECTION.classList.remove("blur");
     }
 

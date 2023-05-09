@@ -54,10 +54,27 @@ footer p {
     text-align: center;
 }
 
+footer p {
+    margin-bottom: 0;
+}
+
 main {
     flex: 1;
     padding: 2rem;
     color: #1b1b2d;
+}
+
+footer a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin-bottom: 5px;
+}
+
+footer a img {
+    height: 30px;
+    width: 30px;
 }
 
 .display-none {
