@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 const MAIN_SECTION = document.querySelector("main");
 const CARDS_CONTAINER = document.querySelector(".cards-container");
 const CARD_TEMPLATE = document.querySelector("#card-template");
@@ -9,57 +10,83 @@ const NEW_BOOK_FORM = document.querySelector(".form-new-book");
 const REQUIRED_INPUTS = document.querySelectorAll(".required-input");
 const FORM_INPUTS = Array.from(NEW_BOOK_FORM.querySelectorAll("input"));
 
-let library = [];
 let formVisible = false;
 let editingBook = false;
 let currentIndex = 0;
 
-// Book constructor
-function Book(name, author, length, read = false) {
-    this.name = name;
-    this.author = author;
-    this.length = length;
-    this.read = read;
-}
+class Library {
+    constructor(books = []) {
+        this.books = books;
+    }
 
-// Add book to library
-function addBookToLibrary(book) {
-    library.push(book);
-}
+    addBook(book) {
+        this.books.push(book);
+    }
 
-// Set the details of a book's card
-function setCardDetails(book, bookIndex) {
-    const card = CARDS_CONTAINER.querySelector(`[data-card-index="${bookIndex}"]`);
-    card.querySelector(".book-name").textContent = book.name;
-    card.querySelector(".book-author").textContent = `By ${book.author}`;
-    card.querySelector(".book-length").textContent = `Book length: ${book.length} pages`;
+    removeBook(index) {
+        this.books.splice(index, 1);
+    }
 
-    const statusText = card.querySelector(".status-text");
+    displayBooks() {
+        CARDS_CONTAINER.innerHTML = "";
 
-    if (book.read) {
-        statusText.textContent = "Read";
-        statusText.classList.add("read");
-        statusText.classList.remove("unread");
-    } else {
-        statusText.textContent = "Unread";
-        statusText.classList.add("unread");
-        statusText.classList.remove("read");
+        this.books.forEach((book, index) => {
+            const card = CARD_TEMPLATE.cloneNode(true);
+            card.setAttribute("data-card-index", index);
+            card.removeAttribute("id");
+            CARDS_CONTAINER.appendChild(card);
+
+            book.updateCard(index);
+        });
+    }
+
+    getBookByIndex(index) {
+        return this.books[index];
     }
 }
 
-// Display all the books in the library array
-function displayBooks() {
-    CARDS_CONTAINER.innerHTML = "";
+class Book {
+    constructor(name, author, length, read = false) {
+        this.name = name;
+        this.author = author;
+        this.length = length;
+        this.read = read;
+    }
 
-    library.forEach((book, index) => {
-        const card = CARD_TEMPLATE.cloneNode(true);
-        card.setAttribute("data-card-index", index);
-        card.removeAttribute("id");
-        CARDS_CONTAINER.appendChild(card);
+    updateCard(index) {
+        const card = CARDS_CONTAINER.querySelector(`[data-card-index="${index}"]`);
+        card.querySelector(".book-name").textContent = this.name;
+        card.querySelector(".book-author").textContent = `By ${this.author}`;
+        card.querySelector(".book-length").textContent = `Book length: ${this.length} pages`;
 
-        setCardDetails(book, index);
-    });
+        const statusText = card.querySelector(".status-text");
+
+        if (this.read) {
+            statusText.textContent = "Read";
+            statusText.classList.add("read");
+            statusText.classList.remove("unread");
+        } else {
+            statusText.textContent = "Unread";
+            statusText.classList.add("unread");
+            statusText.classList.remove("read");
+        }
+    }
+
+    editBookDetails(inputs) {
+        Object.keys(inputs).forEach((key) => {
+            this[key] = inputs[key];
+        });
+    }
 }
+
+const defaultBooks = [
+    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
+    new Book("War and Peace", "Leo Tolstoy", "1225"),
+    new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200", true),
+    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1276"),
+];
+
+const library = new Library(defaultBooks);
 
 function getFormData() {
     const inputs = FORM_INPUTS.reduce((acc, input) => {
@@ -117,29 +144,22 @@ function toggleForm() {
 function makeBookFromForm() {
     const inputs = getFormData();
     const newBook = new Book(inputs.name, inputs.author, inputs.length, inputs.read);
-    addBookToLibrary(newBook);
-    toggleForm();
-    displayBooks();
-}
 
-// Remove the book at the given index from the library
-function removeBookFromLibrary(bookIndex) {
-    library.splice(bookIndex, 1);
-    displayBooks();
+    library.addBook(newBook);
+    toggleForm();
+    library.displayBooks();
 }
 
 // Edit the book at the given library index
 function editBookFromLibrary(bookIndex) {
     const inputs = getFormData();
-    const book = library[bookIndex];
+    const book = library.getBookByIndex(bookIndex);
 
-    Object.keys(inputs).forEach((key) => {
-        book[key] = inputs[key];
-    });
+    book.editBookDetails(inputs);
 
     editingBook = false;
     toggleForm();
-    displayBooks();
+    library.displayBooks();
 }
 
 // Check if the user clicked outside the modal form
@@ -152,12 +172,7 @@ function onModalClick(event) {
     const modalX = modal.getBoundingClientRect().x;
     const modalY = modal.getBoundingClientRect().y;
 
-    if (
-        clickX < modalX ||
-        clickY < modalY ||
-        clickX > modalX + modal.offsetWidth ||
-        clickY > modalY + modal.offsetHeight
-    ) {
+    if (clickX < modalX || clickY < modalY || clickX > modalX + modal.offsetWidth || clickY > modalY + modal.offsetHeight) {
         toggleForm();
         editingBook = false;
     }
@@ -169,17 +184,20 @@ function onCardButtonClicked(button) {
     const cardIndex = card.getAttribute("data-card-index");
 
     if (button.classList.contains("button-delete")) {
-        removeBookFromLibrary(cardIndex);
-    } else if (button.classList.contains("button-edit")) {
+        library.removeBook(cardIndex);
+        library.displayBooks();
+    }
+
+    if (button.classList.contains("button-edit")) {
         editingBook = true;
         currentIndex = cardIndex;
 
         FORM_INPUTS.forEach((v) => {
             const input = v;
             if (input.type === "checkbox") {
-                input.checked = library[currentIndex][input.name];
+                input.checked = library.getBookByIndex(currentIndex)[input.name];
             } else {
-                input.value = library[currentIndex][input.name];
+                input.value = library.getBookByIndex(currentIndex)[input.name];
             }
         });
 
@@ -195,24 +213,20 @@ function activateInput(input) {
     }
 }
 
-const testLibrary = [
-    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
-    new Book("War and Peace", "Leo Tolstoy", "1225"),
-    new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200", true),
-    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1276"),
-];
-
-library = testLibrary;
-
-displayBooks();
+library.displayBooks();
 
 // Events handled here
 
-OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
-CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
+OPEN_FORM_BUTTON.addEventListener("click", () => {
+    editingBook = false;
+    toggleForm();
+});
+CLOSE_FORM_BUTTON.addEventListener("click", () => {
+    editingBook = false;
+    toggleForm();
+});
 
 NEW_BOOK_FORM.querySelector("#form-submit-button").addEventListener("click", () => {
-    console.log(NEW_BOOK_FORM.checkValidity());
     if (!NEW_BOOK_FORM.checkValidity()) {
         REQUIRED_INPUTS.forEach((input) => activateInput(input));
     }
