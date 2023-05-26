@@ -88,8 +88,6 @@ const defaultBooks = [
 
 const library = new Library(defaultBooks);
 
-
-
 function getFormData() {
     const inputs = FORM_INPUTS.reduce((acc, input) => {
         const {name} = input;
@@ -158,7 +156,7 @@ function editBookFromLibrary(bookIndex) {
     const book = library.getBookByIndex(bookIndex);
 
     book.editBookDetails(inputs);
-    
+
     editingBook = false;
     toggleForm();
     library.displayBooks();
@@ -219,8 +217,14 @@ library.displayBooks();
 
 // Events handled here
 
-OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
-CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
+OPEN_FORM_BUTTON.addEventListener("click", () => {
+    editingBook = false;
+    toggleForm();
+});
+CLOSE_FORM_BUTTON.addEventListener("click", () => {
+    editingBook = false;
+    toggleForm();
+});
 
 NEW_BOOK_FORM.querySelector("#form-submit-button").addEventListener("click", () => {
     if (!NEW_BOOK_FORM.checkValidity()) {
