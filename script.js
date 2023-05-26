@@ -81,11 +81,11 @@ function toggleForm() {
     if (!formVisible) {
         MODAL_WRAPPER.classList.remove("display-none");
         MODAL_WRAPPER.querySelector("#text-book-name").focus();
-        MODAL_WRAPPER.setAttribute("aria-hidden") = false;
+        MODAL_WRAPPER.setAttribute("aria-hidden", false);
         MAIN_SECTION.classList.add("blur");
     } else {
         MODAL_WRAPPER.classList.add("display-none");
-        MODAL_WRAPPER.setAttribute("aria-hidden") = true;
+        MODAL_WRAPPER.setAttribute("aria-hidden", true);
         MAIN_SECTION.classList.remove("blur");
     }
 
@@ -98,7 +98,8 @@ function toggleForm() {
 
         const inputs = NEW_BOOK_FORM.querySelectorAll("input");
 
-        inputs.forEach((input) => {
+        inputs.forEach((v) => {
+            const input = v;
             if (input.type === "checkbox") {
                 input.checked = false;
             } else {
@@ -173,7 +174,8 @@ function onCardButtonClicked(button) {
         editingBook = true;
         currentIndex = cardIndex;
 
-        FORM_INPUTS.forEach((input) => {
+        FORM_INPUTS.forEach((v) => {
+            const input = v;
             if (input.type === "checkbox") {
                 input.checked = library[currentIndex][input.name];
             } else {
