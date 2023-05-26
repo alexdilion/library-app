@@ -14,12 +14,15 @@ let formVisible = false;
 let editingBook = false;
 let currentIndex = 0;
 
-// Book constructor
-function Book(name, author, length, read = false) {
-    this.name = name;
-    this.author = author;
-    this.length = length;
-    this.read = read;
+class Book {
+    read = false;
+
+    constructor(name, author, length, read) {
+        this.name = name;
+        this.author = author;
+        this.length = length;
+        this.read = read;
+    }
 }
 
 // Add book to library
@@ -81,11 +84,11 @@ function toggleForm() {
     if (!formVisible) {
         MODAL_WRAPPER.classList.remove("display-none");
         MODAL_WRAPPER.querySelector("#text-book-name").focus();
-        MODAL_WRAPPER.setAttribute("aria-hidden") = false;
+        MODAL_WRAPPER.setAttribute("aria-hidden", false);
         MAIN_SECTION.classList.add("blur");
     } else {
         MODAL_WRAPPER.classList.add("display-none");
-        MODAL_WRAPPER.setAttribute("aria-hidden") = true;
+        MODAL_WRAPPER.setAttribute("aria-hidden", true);
         MAIN_SECTION.classList.remove("blur");
     }
 
@@ -98,7 +101,8 @@ function toggleForm() {
 
         const inputs = NEW_BOOK_FORM.querySelectorAll("input");
 
-        inputs.forEach((input) => {
+        inputs.forEach((i) => {
+            const input = i;
             if (input.type === "checkbox") {
                 input.checked = false;
             } else {
@@ -116,6 +120,7 @@ function toggleForm() {
 function makeBookFromForm() {
     const inputs = getFormData();
     const newBook = new Book(inputs.name, inputs.author, inputs.length, inputs.read);
+
     addBookToLibrary(newBook);
     toggleForm();
     displayBooks();
@@ -151,12 +156,7 @@ function onModalClick(event) {
     const modalX = modal.getBoundingClientRect().x;
     const modalY = modal.getBoundingClientRect().y;
 
-    if (
-        clickX < modalX ||
-        clickY < modalY ||
-        clickX > modalX + modal.offsetWidth ||
-        clickY > modalY + modal.offsetHeight
-    ) {
+    if (clickX < modalX || clickY < modalY || clickX > modalX + modal.offsetWidth || clickY > modalY + modal.offsetHeight) {
         toggleForm();
         editingBook = false;
     }
@@ -169,11 +169,14 @@ function onCardButtonClicked(button) {
 
     if (button.classList.contains("button-delete")) {
         removeBookFromLibrary(cardIndex);
-    } else if (button.classList.contains("button-edit")) {
+    } 
+    
+    if (button.classList.contains("button-edit")) {
         editingBook = true;
         currentIndex = cardIndex;
 
-        FORM_INPUTS.forEach((input) => {
+        FORM_INPUTS.forEach((i) => {
+            const input = i;
             if (input.type === "checkbox") {
                 input.checked = library[currentIndex][input.name];
             } else {
@@ -193,14 +196,14 @@ function activateInput(input) {
     }
 }
 
-const testLibrary = [
+const defaultBooks = [
     new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
     new Book("War and Peace", "Leo Tolstoy", "1225"),
     new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200", true),
     new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1276"),
 ];
 
-library = testLibrary;
+library = defaultBooks;
 
 displayBooks();
 
@@ -210,7 +213,6 @@ OPEN_FORM_BUTTON.addEventListener("click", toggleForm);
 CLOSE_FORM_BUTTON.addEventListener("click", toggleForm);
 
 NEW_BOOK_FORM.querySelector("#form-submit-button").addEventListener("click", () => {
-    console.log(NEW_BOOK_FORM.checkValidity());
     if (!NEW_BOOK_FORM.checkValidity()) {
         REQUIRED_INPUTS.forEach((input) => activateInput(input));
     }
