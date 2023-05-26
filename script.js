@@ -1,3 +1,4 @@
+/* eslint-disable max-classes-per-file */
 const MAIN_SECTION = document.querySelector("main");
 const CARDS_CONTAINER = document.querySelector(".cards-container");
 const CARD_TEMPLATE = document.querySelector("#card-template");
@@ -9,21 +10,33 @@ const NEW_BOOK_FORM = document.querySelector(".form-new-book");
 const REQUIRED_INPUTS = document.querySelectorAll(".required-input");
 const FORM_INPUTS = Array.from(NEW_BOOK_FORM.querySelectorAll("input"));
 
-let library = [];
 let formVisible = false;
 let editingBook = false;
 let currentIndex = 0;
 
 class Book {
-    read = false;
-
-    constructor(name, author, length, read) {
+    constructor(name, author, length, read = false) {
         this.name = name;
         this.author = author;
         this.length = length;
         this.read = read;
     }
 }
+
+class Library {
+    constructor(books = []) {
+        this.books = books;
+    }
+}
+
+const defaultBooks = [
+    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
+    new Book("War and Peace", "Leo Tolstoy", "1225"),
+    new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200", true),
+    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1276"),
+];
+
+const library = new Library(defaultBooks)
 
 // Add book to library
 function addBookToLibrary(book) {
@@ -169,8 +182,8 @@ function onCardButtonClicked(button) {
 
     if (button.classList.contains("button-delete")) {
         removeBookFromLibrary(cardIndex);
-    } 
-    
+    }
+
     if (button.classList.contains("button-edit")) {
         editingBook = true;
         currentIndex = cardIndex;
@@ -195,15 +208,6 @@ function activateInput(input) {
         input.classList.add("activated");
     }
 }
-
-const defaultBooks = [
-    new Book("Harry Potter and the Philosopher's Stone", "J.K. Rowling", "223", true),
-    new Book("War and Peace", "Leo Tolstoy", "1225"),
-    new Book("All Quiet on the Western Front", "Erich Maria Remarque", "200", true),
-    new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1276"),
-];
-
-library = defaultBooks;
 
 displayBooks();
 
