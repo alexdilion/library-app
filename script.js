@@ -14,6 +14,37 @@ let formVisible = false;
 let editingBook = false;
 let currentIndex = 0;
 
+class Library {
+    constructor(books = []) {
+        this.books = books;
+    }
+
+    addBook(book) {
+        this.books.push(book);
+    }
+
+    removeBook(index) {
+        this.books.splice(index, 1);
+    }
+
+    displayBooks() {
+        CARDS_CONTAINER.innerHTML = "";
+
+        this.books.forEach((book, index) => {
+            const card = CARD_TEMPLATE.cloneNode(true);
+            card.setAttribute("data-card-index", index);
+            card.removeAttribute("id");
+            CARDS_CONTAINER.appendChild(card);
+
+            book.updateCard(index);
+        });
+    }
+
+    getBookByIndex(index) {
+        return this.books[index];
+    }
+}
+
 class Book {
     constructor(name, author, length, read = false) {
         this.name = name;
@@ -21,11 +52,30 @@ class Book {
         this.length = length;
         this.read = read;
     }
-}
 
-class Library {
-    constructor(books = []) {
-        this.books = books;
+    updateCard(index) {
+        const card = CARDS_CONTAINER.querySelector(`[data-card-index="${index}"]`);
+        card.querySelector(".book-name").textContent = this.name;
+        card.querySelector(".book-author").textContent = `By ${this.author}`;
+        card.querySelector(".book-length").textContent = `Book length: ${this.length} pages`;
+
+        const statusText = card.querySelector(".status-text");
+
+        if (this.read) {
+            statusText.textContent = "Read";
+            statusText.classList.add("read");
+            statusText.classList.remove("unread");
+        } else {
+            statusText.textContent = "Unread";
+            statusText.classList.add("unread");
+            statusText.classList.remove("read");
+        }
+    }
+
+    editBookDetails(inputs) {
+        Object.keys(inputs).forEach((key) => {
+            this[key] = inputs[key];
+        });
     }
 }
 
@@ -36,46 +86,9 @@ const defaultBooks = [
     new Book("The Count of Monte Cristo", "Alexandre Dumas and Auguste Maquet", "1276"),
 ];
 
-const library = new Library(defaultBooks)
+const library = new Library(defaultBooks);
 
-// Add book to library
-function addBookToLibrary(book) {
-    library.push(book);
-}
 
-// Set the details of a book's card
-function setCardDetails(book, bookIndex) {
-    const card = CARDS_CONTAINER.querySelector(`[data-card-index="${bookIndex}"]`);
-    card.querySelector(".book-name").textContent = book.name;
-    card.querySelector(".book-author").textContent = `By ${book.author}`;
-    card.querySelector(".book-length").textContent = `Book length: ${book.length} pages`;
-
-    const statusText = card.querySelector(".status-text");
-
-    if (book.read) {
-        statusText.textContent = "Read";
-        statusText.classList.add("read");
-        statusText.classList.remove("unread");
-    } else {
-        statusText.textContent = "Unread";
-        statusText.classList.add("unread");
-        statusText.classList.remove("read");
-    }
-}
-
-// Display all the books in the library array
-function displayBooks() {
-    CARDS_CONTAINER.innerHTML = "";
-
-    library.forEach((book, index) => {
-        const card = CARD_TEMPLATE.cloneNode(true);
-        card.setAttribute("data-card-index", index);
-        card.removeAttribute("id");
-        CARDS_CONTAINER.appendChild(card);
-
-        setCardDetails(book, index);
-    });
-}
 
 function getFormData() {
     const inputs = FORM_INPUTS.reduce((acc, input) => {
@@ -134,29 +147,21 @@ function makeBookFromForm() {
     const inputs = getFormData();
     const newBook = new Book(inputs.name, inputs.author, inputs.length, inputs.read);
 
-    addBookToLibrary(newBook);
+    library.addBook(newBook);
     toggleForm();
-    displayBooks();
-}
-
-// Remove the book at the given index from the library
-function removeBookFromLibrary(bookIndex) {
-    library.splice(bookIndex, 1);
-    displayBooks();
+    library.displayBooks();
 }
 
 // Edit the book at the given library index
 function editBookFromLibrary(bookIndex) {
     const inputs = getFormData();
-    const book = library[bookIndex];
+    const book = library.getBookByIndex(bookIndex);
 
-    Object.keys(inputs).forEach((key) => {
-        book[key] = inputs[key];
-    });
-
+    book.editBookDetails(inputs);
+    
     editingBook = false;
     toggleForm();
-    displayBooks();
+    library.displayBooks();
 }
 
 // Check if the user clicked outside the modal form
@@ -181,7 +186,8 @@ function onCardButtonClicked(button) {
     const cardIndex = card.getAttribute("data-card-index");
 
     if (button.classList.contains("button-delete")) {
-        removeBookFromLibrary(cardIndex);
+        library.removeBook(cardIndex);
+        library.displayBooks();
     }
 
     if (button.classList.contains("button-edit")) {
@@ -191,9 +197,9 @@ function onCardButtonClicked(button) {
         FORM_INPUTS.forEach((i) => {
             const input = i;
             if (input.type === "checkbox") {
-                input.checked = library[currentIndex][input.name];
+                input.checked = library.getBookByIndex(currentIndex)[input.name];
             } else {
-                input.value = library[currentIndex][input.name];
+                input.value = library.getBookByIndex(currentIndex)[input.name];
             }
         });
 
@@ -209,7 +215,7 @@ function activateInput(input) {
     }
 }
 
-displayBooks();
+library.displayBooks();
 
 // Events handled here
 
