@@ -90,14 +90,14 @@ const library = new Library(defaultBooks);
 
 function getFormData() {
     const inputs = FORM_INPUTS.reduce((acc, input) => {
-        const {name} = input;
-        let {value} = input;
+        const { name } = input;
+        let { value } = input;
 
         if (input.type === "checkbox") {
             value = input.checked;
         }
 
-        return {...acc, [name]: value};
+        return { ...acc, [name]: value };
     }, {});
 
     return inputs;
@@ -172,7 +172,13 @@ function onModalClick(event) {
     const modalX = modal.getBoundingClientRect().x;
     const modalY = modal.getBoundingClientRect().y;
 
-    if (clickX < modalX || clickY < modalY || clickX > modalX + modal.offsetWidth || clickY > modalY + modal.offsetHeight) {
+    // Check if user has clicked outside of the form to close
+    if (
+        clickX < modalX ||
+        clickY < modalY ||
+        clickX > modalX + modal.offsetWidth ||
+        clickY > modalY + modal.offsetHeight
+    ) {
         toggleForm();
         editingBook = false;
     }
@@ -205,11 +211,32 @@ function onCardButtonClicked(button) {
     }
 }
 
-// "Activate" input after they've been selected once
+// Activate input after they've been selected once
 // This prevents errors from showing up before the user has interacted with the inputs
 function activateInput(input) {
     if (!input.classList.contains("activated")) {
         input.classList.add("activated");
+    }
+}
+
+function checkInputValidity(input) {
+    if (input.checkValidity()) return;
+
+    const errorElement = document.querySelector(`#${input.id} + .error-message`);
+    const labelText = input.parentNode.querySelector("label").innerText.slice(0, -2);
+
+    console.log(labelText);
+
+    switch (true) {
+        case input.validity.valueMissing:
+            errorElement.innerHTML = `<span class="material-symbols-outlined" aria-label="Attention!" aria-hidden="true">error</span>Please enter a value for the ${labelText.toLowerCase()}`;
+            break;
+        case input.validity.rangeUnderflow:
+            errorElement.innerHTML = `<span class="material-symbols-outlined" aria-label="Attention!" aria-hidden="true">error</span>Please enter a positive value for the ${labelText.toLowerCase()}`;
+            break;
+        default:
+            errorElement.innerHTML = `<span class="material-symbols-outlined" aria-label="Attention!" aria-hidden="true">error</span>Please enter a valid value for the ${labelText.toLowerCase()}`;
+            break;
     }
 }
 
@@ -221,6 +248,7 @@ OPEN_FORM_BUTTON.addEventListener("click", () => {
     editingBook = false;
     toggleForm();
 });
+
 CLOSE_FORM_BUTTON.addEventListener("click", () => {
     editingBook = false;
     toggleForm();
@@ -240,6 +268,9 @@ CARDS_CONTAINER.addEventListener("click", (event) => {
 
 REQUIRED_INPUTS.forEach((input) => {
     input.addEventListener("focusout", (event) => activateInput(event.target));
+    input.addEventListener("change", () => {
+        checkInputValidity(input);
+    });
 });
 
 document.addEventListener("mousedown", (event) => {

@@ -19,7 +19,8 @@
 /* General page styling and layout */
 
 * {
-    font-family: Poppins, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans", Arial, sans-serif;
+    font-family: Poppins, "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande", "Lucida Sans",
+        Arial, sans-serif;
     box-sizing: border-box;
     color: #1b1b2d;
 }
@@ -272,14 +273,16 @@ footer a img {
     font-weight: 500;
 }
 
-.form-new-book input[type="text"] {
+.form-new-book input[type="text"],
+.form-new-book input[type="number"] {
     border: 1px solid #1b1b2d;
     border-radius: 0.5rem;
     padding: 0.5rem 0.75rem;
     font-size: 1rem;
 }
 
-.form-new-book input[type="text"]:focus {
+.form-new-book input[type="text"]:focus,
+.form-new-book input[type="number"]:focus {
     background-color: #f0f0f0;
 }
 
